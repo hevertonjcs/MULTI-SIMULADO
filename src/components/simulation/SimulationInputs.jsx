@@ -96,7 +96,7 @@ const SimulationInputs = React.memo(({
   type="button"
   onClick={handleEntradaMinima}
   variant="primary"  // Alterado de "secondary" para "primary"
-  className="w-full border-app-primary text-app-primary hover:bg-app-primary hover:text-primary-foreground transition-all duration-300 flex items-center justify-center"
+  className="inline-flex border border-app-primary text-app-primary hover:bg-app-primary hover:text-primary-foreground transition-all duration-300 items-center justify-center px-4 py-2 rounded"
 >
   Entrada Mínima
 </Button>
