@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button'; // IMPORT do botão
 
 const SimulationInputs = React.memo(({
   valorCredito,
@@ -34,6 +35,27 @@ const SimulationInputs = React.memo(({
     e.target.value = value;
   }, []);
 
+  // 👉 Função para calcular a entrada mínima (8.466% do valor do crédito)
+  const handleEntradaMinima = useCallback(() => {
+    if (!valorCredito) return;
+
+    const numericValue = parseFloat(
+      valorCredito.replace(/\./g, '').replace(',', '.').replace(/[^\d.]/g, '')
+    );
+
+    if (isNaN(numericValue) || numericValue <= 0) return;
+
+    const entradaMinima = numericValue * 0.08466;
+
+    const formattedValue = new Intl.NumberFormat('pt-BR', {
+      style: 'currency',
+      currency: 'BRL',
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    }).format(entradaMinima);
+
+    handleEntradaChange(formattedValue);
+  }, [valorCredito, handleEntradaChange]);
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-start">
@@ -57,17 +79,28 @@ const SimulationInputs = React.memo(({
         <Label htmlFor="entrada-sugerida" className="text-app-text font-medium mb-1 block">
           Entrada Sugerida (Opcional)
         </Label>
-        <Input
-          id="entrada-sugerida"
-          ref={entradaSugeridaRef}
-          value={entradaSugerida}
-          onChange={(e) => handleChange(e, handleEntradaChange)}
-          onFocus={handleFocus}
-          placeholder="R$ 9.000,00"
-          className="input-field"
-          inputMode="decimal"
-          aria-label="Entrada Sugerida"
-        />
+        <div className="flex gap-2">
+          <Input
+            id="entrada-sugerida"
+            ref={entradaSugeridaRef}
+            value={entradaSugerida}
+            onChange={(e) => handleChange(e, handleEntradaChange)}
+            onFocus={handleFocus}
+            placeholder="R$ 9.000,00"
+            className="input-field"
+            inputMode="decimal"
+            aria-label="Entrada Sugerida"
+          />
+          {/* Botão Entrada Mínima */}
+          <Button
+            type="button"
+            onClick={handleEntradaMinima}
+            variant="secondary"
+            className="whitespace-nowrap"
+          >
+            Entrada Mínima
+          </Button>
+        </div>
       </div>
     </div>
   );
