@@ -95,8 +95,8 @@ const SimulationInputs = React.memo(({
 <Button
   type="button"
   onClick={handleEntradaMinima}
-  variant="secondary" // Preto, mais discreto
-  className="whitespace-nowrap px-3 py-1 text-sm" // Ajuste de tamanho para ficar menor
+  variant="primary"  // Alterado de "secondary" para "primary"
+  className="whitespace-nowrap"
 >
   Entrada Mínima
 </Button>
