@@ -95,7 +95,7 @@ const SimulationInputs = React.memo(({
           <Button
             type="button"
             onClick={handleEntradaMinima}
-            variant="secondary"
+            variant="primary"
             className="whitespace-nowrap"
           >
             Entrada Mínima
