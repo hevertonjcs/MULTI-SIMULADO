@@ -92,14 +92,14 @@ const SimulationInputs = React.memo(({
             aria-label="Entrada Sugerida"
           />
           {/* Botão Entrada Mínima */}
-          <Button
-            type="button"
-            onClick={handleEntradaMinima}
-            variant="primary"
-            className="whitespace-nowrap"
-          >
-            Entrada Mínima
-          </Button>
+<Button
+  type="button"
+  onClick={handleEntradaMinima}
+  variant="primary"    // Mesmo variant do botão "Calcular Simulação"
+  className="whitespace-nowrap"
+>
+  Entrada Mínima
+</Button>
         </div>
       </div>
     </div>
