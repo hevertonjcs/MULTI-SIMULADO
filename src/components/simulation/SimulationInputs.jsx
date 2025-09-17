@@ -50,7 +50,7 @@ const SimulationInputs = React.memo(({
 
     if (numericValue < 2898.12) {
       handleEntradaChange('R$ 2.898,12');
-      setEntradaError('⚠️ A entrada mínima permitida é R$ 2.898,12');
+      setEntradaError('⚠️ A entrada mínima é R$ 2.898,12');
     }
   }, [entradaSugerida, handleEntradaChange]);
 
