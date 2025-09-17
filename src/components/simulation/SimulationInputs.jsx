@@ -20,6 +20,13 @@ const SimulationInputs = React.memo(({
     }
     
     const numericValue = parseFloat(value) / 100;
+
+    // 👉 regra do mínimo (só aplicada no campo de entrada sugerida)
+    if (handlerFunction === handleEntradaChange && numericValue < 2898.12) {
+      handlerFunction("R$ 2.898,12");
+      return;
+    }
+
     const formattedValue = new Intl.NumberFormat('pt-BR', {
       style: 'currency',
       currency: 'BRL',
@@ -28,14 +35,14 @@ const SimulationInputs = React.memo(({
     }).format(numericValue);
     
     handlerFunction(formattedValue);
-  }, []);
+  }, [handleEntradaChange]);
 
   const handleFocus = useCallback((e) => {
     const value = e.target.value.replace(/[^\d,]/g, '');
     e.target.value = value;
   }, []);
 
-  // 👉 Função para calcular a entrada mínima (8.466% do valor do crédito)
+  // 👉 Função para calcular a entrada mínima (8.466% do valor do crédito OU 2.898,12, o que for maior)
   const handleEntradaMinima = useCallback(() => {
     if (!valorCredito) return;
 
@@ -45,7 +52,12 @@ const SimulationInputs = React.memo(({
 
     if (isNaN(numericValue) || numericValue <= 0) return;
 
-    const entradaMinima = numericValue * 0.08466;
+    let entradaMinima = numericValue * 0.08466;
+
+    // 👉 aplica o piso de 2.898,12
+    if (entradaMinima < 2898.12) {
+      entradaMinima = 2898.12;
+    }
 
     const formattedValue = new Intl.NumberFormat('pt-BR', {
       style: 'currency',
@@ -91,15 +103,15 @@ const SimulationInputs = React.memo(({
             inputMode="decimal"
             aria-label="Entrada Sugerida"
           />
-{/* Botão Entrada Mínima */}
-<Button
-  type="button"
-  onClick={handleEntradaMinima}
-  variant="primary"  // Alterado de "secondary" para "primary"
-  className="inline-flex border border-app-primary text-app-primary hover:bg-app-primary hover:text-primary-foreground transition-all duration-300 items-center justify-center px-4 py-2 rounded"
->
-  Entrada Mínima
-</Button>
+          {/* Botão Entrada Mínima */}
+          <Button
+            type="button"
+            onClick={handleEntradaMinima}
+            variant="primary"
+            className="inline-flex border border-app-primary text-app-primary hover:bg-app-primary hover:text-primary-foreground transition-all duration-300 items-center justify-center px-4 py-2 rounded"
+          >
+            Entrada Mínima
+          </Button>
         </div>
       </div>
     </div>
