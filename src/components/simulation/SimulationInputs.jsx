@@ -1,7 +1,7 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Button } from '@/components/ui/button'; // IMPORT do botão
+import { Button } from '@/components/ui/button';
 
 const SimulationInputs = React.memo(({
   valorCredito,
@@ -11,38 +11,50 @@ const SimulationInputs = React.memo(({
   valorCreditoRef,
   entradaSugeridaRef,
 }) => {
-  
+  const [entradaError, setEntradaError] = useState('');
+
   const handleChange = useCallback((e, handlerFunction) => {
-    let value = e.target.value.replace(/\D/g, ''); 
+    let value = e.target.value.replace(/\D/g, '');
     if (value === '') {
       handlerFunction('');
       return;
     }
-    
-    const numericValue = parseFloat(value) / 100;
 
-    // 👉 regra do mínimo (só aplicada no campo de entrada sugerida)
-    if (handlerFunction === handleEntradaChange && numericValue < 2898.12) {
-      handlerFunction("R$ 2.898,12");
-      return;
-    }
+    const numericValue = parseFloat(value) / 100;
 
     const formattedValue = new Intl.NumberFormat('pt-BR', {
       style: 'currency',
       currency: 'BRL',
       minimumFractionDigits: 2,
-      maximumFractionDigits: 2
+      maximumFractionDigits: 2,
     }).format(numericValue);
-    
+
     handlerFunction(formattedValue);
-  }, [handleEntradaChange]);
+    setEntradaError(''); // limpa aviso ao digitar de novo
+  }, []);
 
   const handleFocus = useCallback((e) => {
     const value = e.target.value.replace(/[^\d,]/g, '');
     e.target.value = value;
   }, []);
 
-  // 👉 Função para calcular a entrada mínima (8.466% do valor do crédito OU 2.898,12, o que for maior)
+  // 👉 Valida mínimo no blur
+  const handleEntradaBlur = useCallback(() => {
+    if (!entradaSugerida) return;
+
+    const numericValue = parseFloat(
+      entradaSugerida.replace(/\./g, '').replace(',', '.').replace(/[^\d.]/g, '')
+    );
+
+    if (isNaN(numericValue)) return;
+
+    if (numericValue < 2898.12) {
+      handleEntradaChange('R$ 2.898,12');
+      setEntradaError('⚠️ A entrada mínima permitida é R$ 2.898,12');
+    }
+  }, [entradaSugerida, handleEntradaChange]);
+
+  // 👉 Função para calcular a entrada mínima (8.466% OU 2.898,12, o que for maior)
   const handleEntradaMinima = useCallback(() => {
     if (!valorCredito) return;
 
@@ -54,7 +66,6 @@ const SimulationInputs = React.memo(({
 
     let entradaMinima = numericValue * 0.08466;
 
-    // 👉 aplica o piso de 2.898,12
     if (entradaMinima < 2898.12) {
       entradaMinima = 2898.12;
     }
@@ -63,10 +74,11 @@ const SimulationInputs = React.memo(({
       style: 'currency',
       currency: 'BRL',
       minimumFractionDigits: 2,
-      maximumFractionDigits: 2
+      maximumFractionDigits: 2,
     }).format(entradaMinima);
 
     handleEntradaChange(formattedValue);
+    setEntradaError('');
   }, [valorCredito, handleEntradaChange]);
 
   return (
@@ -91,27 +103,32 @@ const SimulationInputs = React.memo(({
         <Label htmlFor="entrada-sugerida" className="text-app-text font-medium mb-1 block">
           Entrada Sugerida (Opcional)
         </Label>
-        <div className="flex gap-2">
-          <Input
-            id="entrada-sugerida"
-            ref={entradaSugeridaRef}
-            value={entradaSugerida}
-            onChange={(e) => handleChange(e, handleEntradaChange)}
-            onFocus={handleFocus}
-            placeholder="R$ 9.000,00"
-            className="input-field"
-            inputMode="decimal"
-            aria-label="Entrada Sugerida"
-          />
-          {/* Botão Entrada Mínima */}
-          <Button
-            type="button"
-            onClick={handleEntradaMinima}
-            variant="primary"
-            className="inline-flex border border-app-primary text-app-primary hover:bg-app-primary hover:text-primary-foreground transition-all duration-300 items-center justify-center px-4 py-2 rounded"
-          >
-            Entrada Mínima
-          </Button>
+        <div className="flex flex-col gap-2">
+          <div className="flex gap-2">
+            <Input
+              id="entrada-sugerida"
+              ref={entradaSugeridaRef}
+              value={entradaSugerida}
+              onChange={(e) => handleChange(e, handleEntradaChange)}
+              onFocus={handleFocus}
+              onBlur={handleEntradaBlur}
+              placeholder="R$ 9.000,00"
+              className="input-field"
+              inputMode="decimal"
+              aria-label="Entrada Sugerida"
+            />
+            <Button
+              type="button"
+              onClick={handleEntradaMinima}
+              variant="primary"
+              className="inline-flex border border-app-primary text-app-primary hover:bg-app-primary hover:text-primary-foreground transition-all duration-300 items-center justify-center px-4 py-2 rounded"
+            >
+              Entrada Mínima
+            </Button>
+          </div>
+          {entradaError && (
+            <span className="text-red-500 text-sm">{entradaError}</span>
+          )}
         </div>
       </div>
     </div>
