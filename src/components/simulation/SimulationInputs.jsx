@@ -66,8 +66,8 @@ const SimulationInputs = React.memo(({
 
     let entradaMinima = numericValue * 0.08466;
 
-    if (entradaMinima < 2898.12) {
-      entradaMinima = 2898.12;
+    if (entradaMinima < 3409.13) {
+      entradaMinima = 3409.13;
     }
 
     const formattedValue = new Intl.NumberFormat('pt-BR', {
