@@ -285,8 +285,8 @@ function App() {
       </Dialog>
 
       <footer className="app-footer">
-        <p>&copy; {new Date().getFullYear()} Sistema de Simulação. Todos os direitos reservados.</p>
-        <p className="mt-1">Desenvolvido com <span role="img" aria-label="coração">❤️</span> por Hostinger Horizons</p>
+        <p>&copy; {new Date().getFullYear()} Sistema de Simulação Nivus. Todos os direitos reservados.</p>
+        <p className="mt-1">Desenvolvido <span role="img" aria-label="coração">💣</span> por Agaeverton</p>
       </footer>
 
       <Toaster />
