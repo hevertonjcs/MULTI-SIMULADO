@@ -48,13 +48,13 @@ const SimulationInputs = React.memo(({
 
     if (isNaN(numericValue)) return;
 
-    if (numericValue < 3409.13) {
-      handleEntradaChange('R$ 3.409,13');
-      setEntradaError('⚠️ A entrada mínima é R$ 3.409,13');
+    if (numericValue < 1409.13) {
+      handleEntradaChange('R$ 1.409,13');
+      setEntradaError('⚠️ A entrada mínima é R$ 1.409,13');
     }
   }, [entradaSugerida, handleEntradaChange]);
 
-  // 👉 Função para calcular a entrada mínima (8.466% OU 3.409.13, o que for maior)
+  // 👉 Função para calcular a entrada mínima (8.466% OU 1.409.13, o que for maior)
   const handleEntradaMinima = useCallback(() => {
     if (!valorCredito) return;
 
@@ -66,8 +66,8 @@ const SimulationInputs = React.memo(({
 
     let entradaMinima = numericValue * 0.08466;
 
-    if (entradaMinima < 3409.13) {
-      entradaMinima = 3409.13;
+    if (entradaMinima < 1409.13) {
+      entradaMinima = 1409.13;
     }
 
     const formattedValue = new Intl.NumberFormat('pt-BR', {
