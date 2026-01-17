@@ -9,12 +9,17 @@ import React, { useState } from 'react';
       const [password, setPassword] = useState('');
       const [isLoading, setIsLoading] = useState(false);
 
-      const handleSubmit = async (e) => {
-        e.preventDefault();
-        setIsLoading(true);
-        await onLogin(username, password);
-        setIsLoading(false);
-      };
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setIsLoading(true);
+
+  const normalizedUsername = username.trim().toLowerCase();
+  const normalizedPassword = password.trim().toLowerCase();
+
+  await onLogin(normalizedUsername, normalizedPassword);
+
+  setIsLoading(false);
+};
 
       return (
         <form onSubmit={handleSubmit} className="space-y-6 login-form">
