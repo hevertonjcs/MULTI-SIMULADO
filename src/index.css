@@ -118,8 +118,8 @@
 body {
   background: linear-gradient(
     180deg,
-    #EEF2F8 0%,
-    #E6ECF7 100%
+    #E2EBFA 0%,
+    #C8D9F3 100%
   );
   @apply text-app-text;
   font-feature-settings: "rlig" 1, "calt" 1;
