@@ -4,119 +4,121 @@
 
 @layer base {
   :root {
-    /* Nova Paleta Principal */
-    --app-background: #EBEBEB; /* Fundo geral da tela */
-    --app-text: #1D1A18; /* Cor padrão de texto */
-    --app-secondary: #1D1A18; /* Texto principal e elementos escuros */
-    --app-primary: #00C696; /* Destaques (botões, links, acentos) */
-    --app-primary-dark: #009f85; /* Tom mais escuro para hover/foco em botões primários */
-    --app-surface: #FFFFFF; /* Cor de superfície (cards, inputs) */
-    --app-error: #D32F2F; /* Cor de mensagem de erro */
-    --app-input-border: #DDDDDD; /* Nova borda de input padrão */
-    --app-muted-foreground: #525252; /* Textos secundários/muted */
+    /* ✅ Paleta ALIENA (Navy + Gold) */
+    --app-background: #F4F6FB; /* Fundo geral (clean) */
+    --app-surface: #FFFFFF; /* Cards/inputs */
+    --app-text: #0E1420; /* Texto padrão */
+    --app-secondary: #0B1736; /* Navy (títulos/elementos escuros) */
 
-    /* Variáveis específicas do Simulador (Clean Style) */
+    --app-primary: #0B1736; /* Navy (botões/ações) */
+    --app-primary-dark: #08112A; /* Hover/foco */
+    --app-error: #D32F2F;
+    --app-input-border: #E6EAF2;
+    --app-muted-foreground: #5B6472;
+
+    /* Variáveis específicas do Simulador */
     --field-background: #FFFFFF;
-    --field-border: #DDDDDD;
-    --field-text: #1D1A18;
-    --field-focus-ring: rgba(0, 198, 150, 0.2); /* Para box-shadow de foco */
+    --field-border: #E6EAF2;
+    --field-text: #0E1420;
+    --field-focus-ring: rgba(11, 23, 54, 0.18); /* foco navy */
 
-    /* Cores para Toasts */
-    --toast-success: #00C696; /* Usando a cor primária */
-    --toast-error: #D32F2F; 
-    --toast-info: #3b82f6; /* Azul para informações gerais */
+    /* Toasts */
+    --toast-success: #C9B26A; /* Gold */
+    --toast-error: #D32F2F;
+    --toast-info: #3b82f6;
 
-    /* Shadcn/ui theme variables (adaptadas para a nova paleta) */
-    --background: 240 10% 96.1%; /* #EBEBEB */
-    --foreground: 224 71.4% 4.1%; /* #1D1A18 */
-    
-    --card: 0 0% 100%; /* #FFFFFF */
-    --card-foreground: 224 71.4% 4.1%; /* #1D1A18 */
+    /* ✅ shadcn/ui theme variables (HSL) alinhadas com a paleta */
+    --background: 220 33% 97%; /* ~#F4F6FB */
+    --foreground: 220 25% 8%;  /* ~#0E1420 */
 
-    --popover: 0 0% 100%; /* #FFFFFF */
-    --popover-foreground: 224 71.4% 4.1%; /* #1D1A18 */
+    --card: 0 0% 100%;
+    --card-foreground: 220 25% 8%;
 
-    --primary: 166 100% 39%; /* #00C696 */
-    --primary-foreground: 0 0% 100%; /* White for better contrast on primary */
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 25% 8%;
 
-    --secondary: 224 71.4% 4.1%; /* #1D1A18 */
-    --secondary-foreground: 0 0% 100%; /* White for contrast on secondary */
+    --primary: 221 69% 13%; /* #0B1736 */
+    --primary-foreground: 0 0% 100%;
 
-    --muted: 220 14.3% 95.9%; /* Um cinza claro para muted, derivado de #EBEBEB */
-    --muted-foreground: 220 8.9% 43.1%; /* Cinza mais escuro para texto muted */
+    --secondary: 221 69% 13%; /* Navy */
+    --secondary-foreground: 0 0% 100%;
 
-    --accent: 166 100% 39%; /* #00C696 (mesmo que primary) */
+    --muted: 220 18% 94%;
+    --muted-foreground: 215 16% 42%;
+
+    --accent: 221 69% 13%; /* Navy */
     --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 72.2% 50.6%; /* #D32F2F */
+    --destructive: 0 72.2% 50.6%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 0 0% 86.7%; /* #DDDDDD */
-    --input: 0 0% 86.7%; /* #DDDDDD */
-    --ring: 166 100% 39%; /* #00C696 (para foco) */
+    --border: 220 18% 90%; /* ~#E6EAF2 */
+    --input: 220 18% 90%;
+    --ring: 221 69% 13%; /* Navy */
 
-    --radius: 0.5rem; /* 8px */
+    --radius: 0.75rem; /* 12px (mais premium) */
   }
 
   .dark {
-    /* Manter uma paleta escura para componentes shadcn/ui se necessário, ou adaptar */
-    --app-background: #1D1A18;
-    --app-text: #EBEBEB;
-    --app-secondary: #EBEBEB;
-    --app-primary: #00C696;
-    --app-primary-dark: #009f85;
-    --app-surface: #2a2725; 
-    --app-error: #ef4444; 
-    --app-input-border: #44403c; 
-    --app-muted-foreground: #a1a1aa;
+    /* ✅ Dark mode (Navy profundo + Gold) */
+    --app-background: #08112A;
+    --app-surface: #0B1736;
+    --app-text: #F4F6FB;
+    --app-secondary: #F4F6FB;
 
-    --field-background: #2a2725;
-    --field-border: #44403c;
-    --field-text: #EBEBEB;
-    --field-focus-ring: rgba(0, 198, 150, 0.3);
+    --app-primary: #C9B26A; /* Gold como destaque no dark */
+    --app-primary-dark: #B79F57;
+    --app-error: #ef4444;
+    --app-input-border: #1C2A57;
+    --app-muted-foreground: #AAB3C2;
 
-    --toast-success: #00C696;
+    --field-background: #0B1736;
+    --field-border: #1C2A57;
+    --field-text: #F4F6FB;
+    --field-focus-ring: rgba(201, 178, 106, 0.25);
+
+    --toast-success: #C9B26A;
     --toast-error: #ef4444;
     --toast-info: #60a5fa;
 
-    --background: 224 71.4% 4.1%;
-    --foreground: 210 20% 98%;
-    
-    --card: 224 71.4% 4.1%;
-    --card-foreground: 210 20% 98%;
+    --background: 221 69% 10%;
+    --foreground: 220 33% 97%;
 
-    --popover: 224 71.4% 4.1%;
-    --popover-foreground: 210 20% 98%;
+    --card: 221 69% 13%;
+    --card-foreground: 220 33% 97%;
 
-    --primary: 166 100% 39%; 
-    --primary-foreground: 224 71.4% 4.1%;
+    --popover: 221 69% 13%;
+    --popover-foreground: 220 33% 97%;
 
-    --secondary: 215 27.9% 16.9%; 
-    --secondary-foreground: 210 20% 98%;
+    --primary: 45 45% 61%; /* Gold */
+    --primary-foreground: 221 69% 13%; /* Navy */
 
-    --muted: 215 27.9% 16.9%;
-    --muted-foreground: 217.9 10.6% 64.9%; 
+    --secondary: 221 69% 13%;
+    --secondary-foreground: 220 33% 97%;
 
-    --accent: 166 100% 39%; 
-    --accent-foreground: 224 71.4% 4.1%; 
+    --muted: 221 45% 18%;
+    --muted-foreground: 215 20% 70%;
+
+    --accent: 45 45% 61%;
+    --accent-foreground: 221 69% 13%;
 
     --destructive: 0 62.8% 50.6%;
-    --destructive-foreground: 210 20% 98%;
+    --destructive-foreground: 220 33% 97%;
 
-    --border: 215 27.9% 16.9%;
-    --input: 215 27.9% 16.9%;
-    --ring: 166 100% 39%;
+    --border: 221 45% 22%;
+    --input: 221 45% 22%;
+    --ring: 45 45% 61%;
   }
 }
 
 @layer base {
   * {
-    @apply border-border; 
+    @apply border-border;
   }
   body {
     @apply bg-app-background text-app-text;
     font-feature-settings: "rlig" 1, "calt" 1;
-    font-family: 'Inter', sans-serif; 
+    font-family: 'Inter', sans-serif;
   }
 }
 
@@ -124,35 +126,25 @@
   /* Inputs and Selects */
   .input-field, .select-trigger-field {
     @apply bg-field-background border-2 border-field-border text-field-text rounded-lg
-           placeholder:text-app-muted-foreground 
-           focus:outline-none focus:ring-2 focus:ring-app-primary focus:border-app-primary 
+           placeholder:text-app-muted-foreground
+           focus:outline-none focus:ring-2 focus:ring-app-primary focus:border-app-primary
            focus:shadow-field-focus
            transition-all duration-200;
   }
-  .input-field {
-     @apply px-3 py-2 h-10;
-  }
-  .select-trigger-field {
-    @apply px-3 py-2 h-10 flex items-center justify-between;
-  }
-   .select-content-field {
-    @apply bg-field-background border-2 border-field-border text-field-text rounded-lg shadow-lg;
-  }
-  .select-item-field {
-    @apply hover:bg-app-primary-hover focus:bg-app-primary-focus text-field-text;
-  }
+  .input-field { @apply px-3 py-2 h-10; }
+  .select-trigger-field { @apply px-3 py-2 h-10 flex items-center justify-between; }
+  .select-content-field { @apply bg-field-background border-2 border-field-border text-field-text rounded-lg shadow-lg; }
+  .select-item-field { @apply hover:bg-app-primary-hover focus:bg-app-primary-focus text-field-text; }
 
   /* Tabs */
   .tab-trigger-field {
-    @apply inline-flex items-center justify-center whitespace-nowrap rounded-lg px-3 py-2 text-sm font-medium 
+    @apply inline-flex items-center justify-center whitespace-nowrap rounded-lg px-3 py-2 text-sm font-medium
            transition-all duration-200
            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-app-primary focus-visible:ring-offset-2
            data-[state=active]:bg-app-primary data-[state=active]:text-white data-[state=active]:shadow-md
            data-[state=inactive]:bg-app-surface data-[state=inactive]:text-app-text hover:bg-app-primary-hover;
   }
-  .tab-list-field {
-     @apply inline-flex h-auto items-center justify-center rounded-lg bg-app-surface p-1;
-  }
+  .tab-list-field { @apply inline-flex h-auto items-center justify-center rounded-lg bg-app-surface p-1; }
 
   /* Checkbox */
   .form-checkbox {
@@ -160,20 +152,21 @@
     @apply border-field-border bg-field-background text-app-primary focus:ring-app-primary focus:ring-offset-app-background;
   }
   .form-checkbox:checked {
-      @apply bg-app-primary border-transparent;
-      background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e");
+    @apply bg-app-primary border-transparent;
+    background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e");
   }
 
-  /* Logo and Title */
+  /* ✅ Logo and Title (mais premium) */
   .logo-simulador {
-    @apply block mx-auto mb-4; 
-    max-width: 160px; /* Mantido para consistência */
+    @apply block mx-auto mb-4;
+    max-width: 200px;
     height: auto;
+    filter: drop-shadow(0 10px 18px rgba(0,0,0,.14));
   }
-  .titulo-sistema { 
-    @apply text-app-secondary;
+  .titulo-sistema {
+    @apply text-app-secondary tracking-wide;
   }
-  
+
   /* App Structure */
   .app-container {
     @apply min-h-screen bg-app-background text-app-text flex flex-col transition-colors duration-500;
@@ -192,88 +185,48 @@
   .header-button {
     @apply bg-transparent hover:bg-app-primary-hover hover:text-app-primary border-app-primary-border;
   }
-  .header-button-icon {
-    @apply h-4 w-4 transition-transform duration-200;
-  }
+  .header-button-icon { @apply h-4 w-4 transition-transform duration-200; }
+
   .logout-button {
     @apply text-app-primary border-app-primary hover:bg-app-primary hover:text-white transition-all;
   }
 
   /* Screens & Containers */
-  .login-screen-container {
-    @apply w-full max-w-md flex flex-col items-center;
-  }
-  .login-form-container {
-    @apply w-full p-6 sm:p-8 bg-app-surface shadow-xl rounded-lg;
-  }
-  .simulation-screen-container {
-    @apply w-full max-w-2xl bg-app-surface p-4 sm:p-6 md:p-8 rounded-lg shadow-xl;
-  }
-  .simulation-header {
-    @apply flex justify-between items-center mb-6;
-  }
-  .simulation-title {
-    @apply text-lg sm:text-xl md:text-2xl font-semibold text-app-secondary;
-  }
-  
+  .login-screen-container { @apply w-full max-w-md flex flex-col items-center; }
+  .login-form-container { @apply w-full p-6 sm:p-8 bg-app-surface shadow-xl rounded-lg; }
+  .simulation-screen-container { @apply w-full max-w-2xl bg-app-surface p-4 sm:p-6 md:p-8 rounded-lg shadow-xl; }
+  .simulation-header { @apply flex justify-between items-center mb-6; }
+  .simulation-title { @apply text-lg sm:text-xl md:text-2xl font-semibold text-app-secondary; }
+
   /* Loading and Error States */
-  .loading-fallback {
-    @apply flex flex-col justify-center items-center h-64 text-app-muted-foreground;
-  }
-  .loading-fallback-icon {
-    @apply h-8 w-8 animate-spin text-app-primary mb-2;
-  }
-  .loading-fallback-text {
-    @apply ml-2;
-  }
-  .settings-error-container {
-    @apply flex flex-col items-center justify-center h-64 text-app-error;
-  }
-  .settings-error-icon {
-    @apply h-12 w-12 mb-4;
-  }
-  .settings-error-title {
-    @apply text-lg font-semibold;
-  }
-  .settings-error-message {
-    @apply text-sm text-center;
-  }
-  .settings-error-button {
-    @apply mt-4 bg-app-primary hover:bg-app-primary-dark text-primary-foreground;
-  }
+  .loading-fallback { @apply flex flex-col justify-center items-center h-64 text-app-muted-foreground; }
+  .loading-fallback-icon { @apply h-8 w-8 animate-spin text-app-primary mb-2; }
+  .loading-fallback-text { @apply ml-2; }
+
+  .settings-error-container { @apply flex flex-col items-center justify-center h-64 text-app-error; }
+  .settings-error-icon { @apply h-12 w-12 mb-4; }
+  .settings-error-title { @apply text-lg font-semibold; }
+  .settings-error-message { @apply text-sm text-center; }
+  .settings-error-button { @apply mt-4 bg-app-primary hover:bg-app-primary-dark text-primary-foreground; }
 
   /* Dialog */
-  .dialog-content {
-    @apply rounded-2xl;
-  }
+  .dialog-content { @apply rounded-2xl; }
 
-  /* Toasts (especificando a classe para sucesso) */
+  /* Toasts */
   .toast-success-custom {
-    @apply bg-app-primary text-primary-foreground;
+    @apply text-primary-foreground;
+    background: var(--toast-success);
   }
 }
 
 /* Responsividade específica para mobile */
 @media (max-width: 640px) {
-  .logo-simulador {
-    max-width: 140px;
-  }
-  
-  /* Garantir espaçamento adequado nos botões em mobile */
-  .simulation-buttons {
-    @apply flex flex-col gap-3;
-  }
-  
-  /* Ajustar padding do container principal em mobile */
-  .simulation-container {
-    @apply p-3;
-  }
+  .logo-simulador { max-width: 170px; }
+  .simulation-buttons { @apply flex flex-col gap-3; }
+  .simulation-container { @apply p-3; }
 }
 
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
+::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-track {
   background: hsl(var(--background) / 0.5);
   border-radius: 10px;
