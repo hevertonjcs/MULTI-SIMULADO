@@ -201,7 +201,7 @@ function App() {
                 width="160"
                 height="auto"
               />
-              <h1 className="titulo-sistema text-xl sm:text-2xl font-bold text-app-secondary">SISTEMA DE SIMULAÇÃO GRUPO ALIENA</h1>
+              <h1 className="titulo-sistema text-xl sm:text-2xl font-bold text-app-secondary">SIMULAÇÃO GRUPO ALIENA</h1>
             </div>
             <div className="login-form-container">
               <LoginForm onLogin={handleLogin} loginError={loginError} />
