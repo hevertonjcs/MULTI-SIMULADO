@@ -5,7 +5,7 @@
 @layer base {
   :root {
     /* ✅ Paleta ALIENA (Navy + Gold) */
-    --app-background: #F4F6FB; /* Fundo geral (clean) */
+    --app-background: #EEF2F8; /* Fundo geral (clean) */
     --app-surface: #FFFFFF; /* Cards/inputs */
     --app-text: #0E1420; /* Texto padrão */
     --app-secondary: #0B1736; /* Navy (títulos/elementos escuros) */
