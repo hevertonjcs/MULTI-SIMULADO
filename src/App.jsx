@@ -194,12 +194,11 @@ function App() {
           >
             <div className="login-header text-center mb-8">
               <img
-                src="logo.svg"
+                src="/logo.svg"
                 alt="Logomarca Multinegociações"
                 className="logo-simulador"
                 loading="lazy" 
                 width="160"
-                height="auto"
               />
               <h1 className="titulo-sistema text-xl sm:text-2xl font-bold text-app-secondary">SIMULAÇÃO GRUPO ALIENA</h1>
             </div>
