@@ -174,9 +174,8 @@ body {
 
   /* App Structure */
   .app-container {
-    @apply min-h-screen text-app-text flex flex-col transition-colors duration-500;
-  background: transparent;
-  }
+ @apply min-h-screen bg-app-background text-app-text flex flex-col transition-colors duration-500;
+}
   .app-header {
     @apply flex justify-between items-center p-4 shadow-sm;
   }
