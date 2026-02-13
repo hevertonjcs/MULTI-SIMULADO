@@ -115,11 +115,16 @@
   * {
     @apply border-border;
   }
-  body {
-    @apply bg-app-background text-app-text;
-    font-feature-settings: "rlig" 1, "calt" 1;
-    font-family: 'Inter', sans-serif;
-  }
+body {
+  background: linear-gradient(
+    180deg,
+    #EEF2F8 0%,
+    #E6ECF7 100%
+  );
+  @apply text-app-text;
+  font-feature-settings: "rlig" 1, "calt" 1;
+  font-family: 'Inter', sans-serif;
+}
 }
 
 @layer components {
