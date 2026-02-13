@@ -194,14 +194,14 @@ function App() {
           >
             <div className="login-header text-center mb-8">
               <img
-                src="https://i.ibb.co/7x3XwFZd/multinegociacoes-logo-com-borda.png"
+                src="logo.svg"
                 alt="Logomarca Multinegociações"
                 className="logo-simulador"
                 loading="lazy" 
                 width="160"
                 height="auto"
               />
-              <h1 className="titulo-sistema text-xl sm:text-2xl font-bold text-app-secondary">SISTEMA DE SIMULAÇÃO</h1>
+              <h1 className="titulo-sistema text-xl sm:text-2xl font-bold text-app-secondary">SISTEMA DE SIMULAÇÃO GRUPO ALIENA</h1>
             </div>
             <div className="login-form-container">
               <LoginForm onLogin={handleLogin} loginError={loginError} />
