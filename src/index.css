@@ -238,3 +238,11 @@
 ::-webkit-scrollbar-thumb:hover {
   background: hsl(var(--primary));
 }
+
+/* ✅ Corrige hover/seleção do Select (Radix / shadcn) */
+[data-radix-popper-content-wrapper] [data-highlighted],
+[data-radix-popper-content-wrapper] [aria-selected="true"],
+[data-radix-popper-content-wrapper] [data-state="checked"] {
+  background-color: rgba(201, 178, 106, 0.18) !important; /* Gold leve */
+  color: #0B1736 !important; /* Navy */
+}
