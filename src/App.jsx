@@ -3,9 +3,18 @@ import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
 import { Toaster } from '@/components/ui/toaster';
 import { motion } from 'framer-motion';
-import { LogOut, Settings, BarChart2, Paintbrush, Loader2, Moon, Sun } from 'lucide-react';
+import {
+  LogOut,
+  Settings,
+  BarChart2,
+  Paintbrush,
+  Loader2,
+  Moon,
+  Sun
+} from 'lucide-react';
+
 import LoginForm from '@/components/LoginForm';
-import SimulationForm from '@/components/simulation/SimulationForm'; 
+import SimulationForm from '@/components/simulation/SimulationForm';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { BOT_TOKEN, CHAT_ID } from '@/config/constants';
 import userService from '@/services/userService';
@@ -18,7 +27,7 @@ const OutputEditorModal = React.lazy(() => import('@/components/admin/OutputEdit
 
 const LoadingFallback = ({ message = "Carregando..." }) => (
   <div className="loading-fallback">
-    <Loader2 className="loading-fallback-icon" />
+    <Loader2 className="loading-fallback-icon animate-spin" />
     <p className="loading-fallback-text">{message}</p>
   </div>
 );
@@ -26,23 +35,12 @@ const LoadingFallback = ({ message = "Carregando..." }) => (
 function App() {
   const { toast } = useToast();
 
+  /* ===============================
+     DARK MODE
+  ================================ */
+
   const [darkMode, setDarkMode] = useState(true);
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [currentUser, setCurrentUser] = useState(null);
-  const [loginAttempts, setLoginAttempts] = useState(0);
-  const [loginError, setLoginError] = useState('');
-  const [isAdminModalOpen, setIsAdminModalOpen] = useState(false);
-  const [isAnalyticsModalOpen, setIsAnalyticsModalOpen] = useState(false);
-  const [isOutputEditorModalOpen, setIsOutputEditorModalOpen] = useState(false);
-  const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
-  const [simulationRates, setSimulationRates] = useState(null);
-  const [outputTemplate, setOutputTemplate] = useState(null); 
-  const [isLoadingSettings, setIsLoadingSettings] = useState(true);
-
-  /* ===============================
-     DARK MODE INIT (Desktop First)
-  ================================ */
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
 
@@ -62,6 +60,22 @@ function App() {
   };
 
   /* ===============================
+     STATES
+  ================================ */
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
+  const [loginAttempts, setLoginAttempts] = useState(0);
+  const [loginError, setLoginError] = useState('');
+  const [isAdminModalOpen, setIsAdminModalOpen] = useState(false);
+  const [isAnalyticsModalOpen, setIsAnalyticsModalOpen] = useState(false);
+  const [isOutputEditorModalOpen, setIsOutputEditorModalOpen] = useState(false);
+  const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
+  const [simulationRates, setSimulationRates] = useState(null);
+  const [outputTemplate, setOutputTemplate] = useState(null);
+  const [isLoadingSettings, setIsLoadingSettings] = useState(true);
+
+  /* ===============================
      SETTINGS
   ================================ */
 
@@ -73,6 +87,7 @@ function App() {
 
       setSimulationRates(rates || {});
       setOutputTemplate(templateData?.template || "Template de Saída Padrão");
+
     } catch (error) {
       toast({
         title: "Erro ao carregar configurações",
@@ -102,17 +117,33 @@ function App() {
       return false;
     }
 
+    if (loginAttempts >= 5) {
+      setLoginError("Muitas tentativas. Tente novamente mais tarde.");
+      return false;
+    }
+
     try {
       const user = await userService.verifyCredentials(username, password);
+
       if (user && user.id) {
         setIsLoggedIn(true);
         setCurrentUser(user);
+        setLoginAttempts(0);
+
+        toast({
+          title: "Login realizado",
+          description: `Bem-vindo, ${user.display_name}`,
+        });
+
         return true;
       } else {
+        setLoginAttempts(prev => prev + 1);
         setLoginError("Usuário ou senha inválidos.");
         return false;
       }
+
     } catch {
+      setLoginAttempts(prev => prev + 1);
       setLoginError("Erro durante o login.");
       return false;
     }
@@ -121,6 +152,7 @@ function App() {
   const handleLogout = () => {
     setIsLoggedIn(false);
     setCurrentUser(null);
+    setIsAdminLoggedIn(false);
   };
 
   const handleAdminLogin = () => {
@@ -129,7 +161,11 @@ function App() {
 
   const handleSettingsUpdate = useCallback(async () => {
     await fetchInitialSettings();
-  }, [fetchInitialSettings]);
+    toast({
+      title: "Configurações atualizadas",
+      description: "As novas configurações foram aplicadas.",
+    });
+  }, [fetchInitialSettings, toast]);
 
   /* ===============================
      RENDER
@@ -137,6 +173,8 @@ function App() {
 
   return (
     <div className="app-container">
+
+      {/* HEADER */}
       <header className="app-header">
 
         <div className="flex gap-2">
@@ -152,7 +190,7 @@ function App() {
 
         <div className="flex gap-2">
 
-          {/* TOGGLE DARK MODE - APENAS DESKTOP */}
+          {/* DARK MODE BUTTON */}
           <Button
             variant="outline"
             onClick={toggleTheme}
@@ -187,7 +225,9 @@ function App() {
         </div>
       </header>
 
+      {/* MAIN */}
       <main className="app-main">
+
         {!isLoggedIn ? (
           <motion.div
             initial={{ opacity: 0 }}
@@ -195,12 +235,7 @@ function App() {
             className="login-screen-container"
           >
             <div className="login-header text-center mb-8">
-              <img
-                src="/logo.svg"
-                alt="Logo"
-                className="logo-simulador"
-                width="160"
-              />
+              <img src="/logo.svg" alt="Logo" className="logo-simulador" width="160" />
               <h1 className="titulo-sistema text-xl sm:text-2xl font-bold">
                 SIMULAÇÃO GRUPO ALIENA
               </h1>
@@ -210,6 +245,7 @@ function App() {
               <LoginForm onLogin={handleLogin} loginError={loginError} />
             </div>
           </motion.div>
+
         ) : (
           <motion.div
             initial={{ opacity: 0 }}
@@ -226,7 +262,7 @@ function App() {
             </div>
 
             {isLoadingSettings ? (
-              <LoadingFallback message="Carregando..." />
+              <LoadingFallback message="Carregando configurações..." />
             ) : (
               <SimulationForm
                 currentUserDisplay={currentUser?.display_name}
@@ -242,6 +278,52 @@ function App() {
           </motion.div>
         )}
       </main>
+
+      {/* MODAIS */}
+
+      <Dialog open={isAdminModalOpen} onOpenChange={setIsAdminModalOpen}>
+        <DialogContent className="sm:max-w-[600px]">
+          <Suspense fallback={<LoadingFallback message="Carregando Admin..." />}>
+            {!isAdminLoggedIn ? (
+              <AdminLogin
+                onLogin={handleAdminLogin}
+                onClose={() => setIsAdminModalOpen(false)}
+                adminPassword={"2202-2000"}
+              />
+            ) : (
+              <AdminPanel
+                onClose={() => {
+                  setIsAdminModalOpen(false);
+                  setIsAdminLoggedIn(false);
+                }}
+              />
+            )}
+          </Suspense>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={isAnalyticsModalOpen} onOpenChange={setIsAnalyticsModalOpen}>
+        <DialogContent className="sm:max-w-[800px] p-0">
+          <Suspense fallback={<LoadingFallback message="Carregando Analytics..." />}>
+            <AnalyticsPanel onClose={() => setIsAnalyticsModalOpen(false)} />
+          </Suspense>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={isOutputEditorModalOpen} onOpenChange={setIsOutputEditorModalOpen}>
+        <DialogContent className="sm:max-w-[700px]">
+          <Suspense fallback={<LoadingFallback message="Carregando Editor..." />}>
+            <OutputEditorModal
+              onClose={() => setIsOutputEditorModalOpen(false)}
+              onSettingsUpdate={handleSettingsUpdate}
+            />
+          </Suspense>
+        </DialogContent>
+      </Dialog>
+
+      <footer className="app-footer">
+        <p>&copy; {new Date().getFullYear()} Sistema de Simulação Nivus.</p>
+      </footer>
 
       <Toaster />
     </div>
