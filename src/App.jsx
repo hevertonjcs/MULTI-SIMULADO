@@ -194,7 +194,7 @@ function App() {
           <Button
             variant="outline"
             onClick={toggleTheme}
-            className="header-button hidden md:flex"
+            className="header-button"
             title="Alternar Tema"
           >
             {darkMode ? (
