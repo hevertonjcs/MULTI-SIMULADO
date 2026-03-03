@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
 import { Toaster } from '@/components/ui/toaster';
 import { motion } from 'framer-motion';
-import { LogOut, Settings, BarChart2, Paintbrush, Loader2 } from 'lucide-react';
+import { LogOut, Settings, BarChart2, Paintbrush, Loader2, Moon, Sun } from 'lucide-react';
 import LoginForm from '@/components/LoginForm';
 import SimulationForm from '@/components/simulation/SimulationForm'; 
 import { Dialog, DialogContent } from '@/components/ui/dialog';
@@ -25,6 +25,9 @@ const LoadingFallback = ({ message = "Carregando..." }) => (
 
 function App() {
   const { toast } = useToast();
+
+  const [darkMode, setDarkMode] = useState(true);
+
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
   const [loginAttempts, setLoginAttempts] = useState(0);
@@ -37,42 +40,47 @@ function App() {
   const [outputTemplate, setOutputTemplate] = useState(null); 
   const [isLoadingSettings, setIsLoadingSettings] = useState(true);
 
+  /* ===============================
+     DARK MODE INIT (Desktop First)
+  ================================ */
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("theme");
+
+    if (savedTheme === "light") {
+      document.documentElement.classList.remove("dark");
+      setDarkMode(false);
+    } else {
+      document.documentElement.classList.add("dark");
+      setDarkMode(true);
+    }
+  }, []);
+
+  const toggleTheme = () => {
+    const isDark = document.documentElement.classList.toggle("dark");
+    setDarkMode(isDark);
+    localStorage.setItem("theme", isDark ? "dark" : "light");
+  };
+
+  /* ===============================
+     SETTINGS
+  ================================ */
+
   const fetchInitialSettings = useCallback(async () => {
     setIsLoadingSettings(true);
     try {
       const rates = await simulationSettingsService.getSimulationVariables();
       const templateData = await simulationSettingsService.getOutputTemplate();
-      
-      if (!rates || Object.keys(rates).length === 0) {
-        console.warn("Taxas de simulação não carregadas ou vazias.");
-        toast({
-            title: "Aviso de Configuração",
-            description: "As taxas de simulação base não foram carregadas. Usando padrões.",
-            variant: "default", 
-        });
-      }
-      setSimulationRates(rates || {}); 
 
-      if (!templateData || !templateData.template) {
-        console.warn("Template de saída não carregado ou vazio.");
-        toast({
-            title: "Aviso de Configuração",
-            description: "O template de saída não foi carregado. Usando padrão.",
-            variant: "default",
-        });
-      }
-      setOutputTemplate(templateData?.template || "Template de Saída Padrão: {TIPO_SIMULACAO} etc.");
-
-
+      setSimulationRates(rates || {});
+      setOutputTemplate(templateData?.template || "Template de Saída Padrão");
     } catch (error) {
-      console.error("Error fetching initial settings:", error);
       toast({
         title: "Erro ao carregar configurações",
-        description: "Não foi possível carregar as configurações iniciais da simulação. Algumas funcionalidades podem não estar disponíveis.",
+        description: "Não foi possível carregar as configurações.",
         variant: "destructive",
       });
-      setSimulationRates({}); 
-      setOutputTemplate("Template de Saída Padrão: {TIPO_SIMULACAO} etc."); 
+      setSimulationRates({});
+      setOutputTemplate("Template de Saída Padrão");
     } finally {
       setIsLoadingSettings(false);
     }
@@ -82,17 +90,15 @@ function App() {
     fetchInitialSettings();
   }, [fetchInitialSettings]);
 
+  /* ===============================
+     LOGIN
+  ================================ */
+
   const handleLogin = async (username, password) => {
-    setLoginError(''); 
+    setLoginError('');
+
     if (!username || !password) {
       setLoginError("Usuário e senha são obrigatórios.");
-      toast({ title: "Erro de Login", description: "Usuário e senha são obrigatórios.", variant: "destructive" });
-      return false;
-    }
-    if (loginAttempts >= 5) { 
-      const newError = "Muitas tentativas de login. Tente novamente mais tarde.";
-      setLoginError(newError);
-      toast({ title: "Erro de Login", description: newError, variant: "destructive" });
       return false;
     }
 
@@ -101,57 +107,38 @@ function App() {
       if (user && user.id) {
         setIsLoggedIn(true);
         setCurrentUser(user);
-        setLoginAttempts(0);
-        setLoginError('');
-        toast({ title: "Login bem-sucedido!", description: `Bem-vindo, ${user.display_name}!`, className: "toast-success-custom" });
         return true;
       } else {
-        setLoginAttempts(prev => prev + 1);
-        const newError = "Usuário ou senha inválidos.";
-        setLoginError(newError);
-        toast({ title: "Erro de Login", description: newError, variant: "destructive" });
+        setLoginError("Usuário ou senha inválidos.");
         return false;
       }
-    } catch (error) {
-      console.error("Login error:", error);
-      setLoginAttempts(prev => prev + 1);
-      const newError = "Ocorreu um erro durante o login. Tente novamente.";
-      setLoginError(newError);
-      toast({ title: "Erro de Login", description: newError, variant: "destructive" });
+    } catch {
+      setLoginError("Erro durante o login.");
       return false;
     }
   };
-  
+
   const handleLogout = () => {
     setIsLoggedIn(false);
     setCurrentUser(null);
-    setLoginAttempts(0);
-    setLoginError('');
-    setIsAdminLoggedIn(false); 
-    toast({ title: "Logout", description: "Você saiu do sistema.", className: "toast-success-custom" });
   };
 
   const handleAdminLogin = () => {
     setIsAdminLoggedIn(true);
-    toast({ 
-      title: "Admin Login", 
-      description: "Login administrativo realizado com sucesso!", 
-      className: "toast-success-custom" 
-    });
   };
 
   const handleSettingsUpdate = useCallback(async () => {
-    await fetchInitialSettings(); 
-    toast({
-      title: "Configurações Atualizadas",
-      description: "As configurações da simulação foram recarregadas.",
-      className: "toast-success-custom",
-    });
-  }, [fetchInitialSettings, toast]);
+    await fetchInitialSettings();
+  }, [fetchInitialSettings]);
+
+  /* ===============================
+     RENDER
+  ================================ */
 
   return (
     <div className="app-container">
       <header className="app-header">
+
         <div className="flex gap-2">
           <Button
             variant="outline"
@@ -162,131 +149,99 @@ function App() {
             <BarChart2 className="header-button-icon" />
           </Button>
         </div>
+
         <div className="flex gap-2">
+
+          {/* TOGGLE DARK MODE - APENAS DESKTOP */}
+          <Button
+            variant="outline"
+            onClick={toggleTheme}
+            className="header-button hidden md:flex"
+            title="Alternar Tema"
+          >
+            {darkMode ? (
+              <Sun className="header-button-icon" />
+            ) : (
+              <Moon className="header-button-icon" />
+            )}
+          </Button>
+
           <Button
             variant="outline"
             onClick={() => setIsOutputEditorModalOpen(true)}
-            className="header-button group"
-            title="Editar Saída da Simulação"
+            className="header-button"
+            title="Editar Saída"
           >
-            <Paintbrush className="header-button-icon group-hover:scale-110" />
+            <Paintbrush className="header-button-icon" />
           </Button>
+
           <Button
             variant="outline"
             onClick={() => setIsAdminModalOpen(true)}
-            className="header-button group"
+            className="header-button"
             title="Painel Administrativo"
           >
-            <Settings className="header-button-icon group-hover:scale-110" />
+            <Settings className="header-button-icon" />
           </Button>
+
         </div>
       </header>
 
       <main className="app-main">
         {!isLoggedIn ? (
-          <motion.div 
-            key="login-screen"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
             className="login-screen-container"
           >
             <div className="login-header text-center mb-8">
               <img
                 src="/logo.svg"
-                alt="Logomarca Multinegociações"
+                alt="Logo"
                 className="logo-simulador"
-                loading="lazy" 
                 width="160"
               />
-              <h1 className="titulo-sistema text-xl sm:text-2xl font-bold text-app-secondary">SIMULAÇÃO GRUPO ALIENA</h1>
+              <h1 className="titulo-sistema text-xl sm:text-2xl font-bold">
+                SIMULAÇÃO GRUPO ALIENA
+              </h1>
             </div>
+
             <div className="login-form-container">
               <LoginForm onLogin={handleLogin} loginError={loginError} />
             </div>
           </motion.div>
         ) : (
-          <motion.div 
-            key="simulation-screen"
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            transition={{ duration: 0.3 }}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
             className="simulation-screen-container"
           >
             <div className="simulation-header">
               <h2 className="simulation-title">
-                Simulador - <span className="text-app-primary">{currentUser?.display_name || 'Usuário'}</span>
+                Simulador - {currentUser?.display_name}
               </h2>
-              <Button variant="outline" onClick={handleLogout} className="logout-button">
-                <LogOut className="mr-2 h-4 w-4"/> Sair
+              <Button variant="outline" onClick={handleLogout}>
+                <LogOut className="mr-2 h-4 w-4" /> Sair
               </Button>
             </div>
+
             {isLoadingSettings ? (
-               <LoadingFallback message="Carregando configurações da simulação..." />
-            ) : simulationRates && outputTemplate !== null ? ( 
-              <SimulationForm 
+              <LoadingFallback message="Carregando..." />
+            ) : (
+              <SimulationForm
                 currentUserDisplay={currentUser?.display_name}
                 currentUserCompany={currentUser?.company}
                 currentUserId={currentUser?.id}
-                botToken={BOT_TOKEN} 
+                botToken={BOT_TOKEN}
                 chatId={CHAT_ID}
                 toast={toast}
                 initialSimulationRates={simulationRates}
                 initialOutputTemplate={outputTemplate}
               />
-            ) : (
-              <div className="settings-error-container">
-                <Settings className="settings-error-icon" />
-                <p className="settings-error-title">Erro ao Carregar Configurações</p>
-                <p className="settings-error-message">Não foi possível carregar os dados necessários para a simulação. <br/>Tente recarregar a página ou contate o suporte.</p>
-                <Button onClick={fetchInitialSettings} className="settings-error-button">Tentar Novamente</Button>
-              </div>
             )}
           </motion.div>
         )}
       </main>
-
-      <Dialog open={isAdminModalOpen} onOpenChange={setIsAdminModalOpen}>
-        <DialogContent className="dialog-content sm:max-w-[600px]">
-          <Suspense fallback={<LoadingFallback message="Carregando Painel Admin..." />}>
-            {!isAdminLoggedIn ? (
-              <AdminLogin 
-                onLogin={handleAdminLogin}
-                onClose={() => setIsAdminModalOpen(false)}
-                adminPassword={"2202-2000"}
-              />
-            ) : (
-              <AdminPanel onClose={() => { setIsAdminModalOpen(false); setIsAdminLoggedIn(false); }} />
-            )}
-          </Suspense>
-        </DialogContent>
-      </Dialog>
-
-      <Dialog open={isAnalyticsModalOpen} onOpenChange={setIsAnalyticsModalOpen}>
-        <DialogContent className="dialog-content sm:max-w-[800px] p-0">
-          <Suspense fallback={<LoadingFallback message="Carregando Analytics..." />}>
-            <AnalyticsPanel onClose={() => setIsAnalyticsModalOpen(false)} />
-          </Suspense>
-        </DialogContent>
-      </Dialog>
-
-      <Dialog open={isOutputEditorModalOpen} onOpenChange={setIsOutputEditorModalOpen}>
-        <DialogContent className="dialog-content sm:max-w-[700px]">
-          <Suspense fallback={<LoadingFallback message="Carregando Editor de Saída..." />}>
-            <OutputEditorModal 
-              onClose={() => setIsOutputEditorModalOpen(false)} 
-              onSettingsUpdate={handleSettingsUpdate}
-            />
-          </Suspense>
-        </DialogContent>
-      </Dialog>
-
-      <footer className="app-footer">
-        <p>&copy; {new Date().getFullYear()} Sistema de Simulação Nivus. Todos os direitos reservados.</p>
-        <p className="mt-1">Desenvolvido <span role="img" aria-label="coração">💣</span> por Agaeverton</p>
-      </footer>
 
       <Toaster />
     </div>
